@@ -13,7 +13,7 @@ fn main() {
     let mut w = v.clone();
     // println!("{:?}", &w);
     let before_quicksort = Instant::now();
-    quicksort(&mut w, 0, v.len());
+    quicksort(&mut w, 1, v.len()-1);
     println!("Elapsed time for quicksort was {:?}.", before_quicksort.elapsed());
     // println!("{:?}", &w);
 
@@ -73,24 +73,10 @@ fn insertion_sort<T: PartialOrd + std::fmt::Debug>(v: &mut [T]) {
 // don't do that here, but you could add some print statements if,
 // for example, you want to watch the sorting happen.
 fn quicksort<T: PartialOrd + std::fmt::Debug>(v: &mut [T], low: usize, high: usize ) {
-    // Quicksort is a recursive solution where we select a pivot
-    // value (usually just the first element) and split (in place)
-    // the array into two sections: The "front" is all < the pivot,
-    // and the "back" is all ≥ pivot. More formally, there's an
-    // index smaller where:
-    //   (All i | 0 ≤ i < smaller : v[i] < pivot) /\
-    //   (All i | smaller ≤ i < length : v[i] ≥ pivot)
-    // Now you can recursively call quicksort on the front using
-    // the slice v[0..smaller] to sort that part, and call it
-    // recursively on the slice v[smaller+1..length] to sort 
-    // the back half. (You need the +1 to ensure that both slices
-    // are smaller than the original array; without it you can
-    // end up with infinite recursion.)
     if low < high{ 
             /* pi is partitioning index, arr[pi] is  
               now at right place */
             let pi = partition(v, low, high); 
-  
             // Recursively sort elements before 
             // partition and after partition 
             quicksort(v, low, pi-1); 
@@ -98,38 +84,19 @@ fn quicksort<T: PartialOrd + std::fmt::Debug>(v: &mut [T], low: usize, high: usi
         } 
     } 
 
-//     let length = v.len();
-//     // If the array has 0 or 1 elements it's already sorted
-//     // and we'll just stop.
-//     if length < 2 {
-//         return;
-//     }
-
-//     // Now choose a pivot and do the organizing.
-    
-//     // ...
-
-//     let smaller = 99999999; // Totally wrong – you should fix this.
-
-//     // Sort all the items < pivot
-//     quicksort(&mut v[0..smaller]);
-//     // Sort all the items ≥ pivot, *not* including the
-//     // pivot value itself. If we don't include the +1
-//     // here you can end up in infinite recursions.
-//     quicksort(&mut v[smaller+1..length]);
-// }
-fn partition<T : PartialOrd + std::fmt::Debug>(V: &mut [T], low: usize, high: usize) -> usize{  
-        let mut i: usize = low -1;
-        for j in low..high{ 
+fn partition<T : PartialOrd + std::fmt::Debug>(v: &mut [T], low: usize, high: usize) -> usize{  
+        let mut i: usize = low-1;
+        
+        for j in low..(high){ 
             // If current element is smaller than the pivot 
-            if V[j] < V[high] { 
-                i+=1; 
+            if v[j] < v[high] { 
+                i = i+1; 
                 // swap arr[i] and arr[j]
-                V.swap(i, j);
+                v.swap(i, j);
             } 
         } 
         // swap arr[i+1] and arr[high] (or pivot)
-        V.swap(i+1, high);   
+        v.swap(i+1, high);   
         return i+1 
 }
 
@@ -245,7 +212,7 @@ mod tests {
         fn empty() {
             let mut input : [i32; 0] = [];
             let n: usize = input.len();
-            quicksort(&mut input, 0, n);
+            quicksort(&mut input, 1, n);
             let expected : [i32; 0] = [];
 
             assert_eq!(expected, input);
@@ -255,7 +222,7 @@ mod tests {
         fn ten_items() {
             let mut input = [3, 2, 0, 5, 8, 9, 6, 3, 2, 0];
             let n: usize = input.len();
-            quicksort(&mut input, 0, n);
+            quicksort(&mut input, 1, n-1);
             let expected = [0, 0, 2, 2, 3, 3, 5, 6, 8, 9];
 
             assert_eq!(expected, input);
@@ -265,7 +232,7 @@ mod tests {
         fn presorted() {
             let mut input = [0, 0, 2, 2, 3, 3, 5, 6, 8, 9];
             let n: usize = input.len();
-            quicksort(&mut input, 0, n);
+            quicksort(&mut input, 1, n-1);
             let expected = [0, 0, 2, 2, 3, 3, 5, 6, 8, 9];
 
             assert_eq!(expected, input);
