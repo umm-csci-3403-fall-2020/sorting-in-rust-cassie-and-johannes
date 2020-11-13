@@ -107,7 +107,7 @@ fn partition<T : PartialOrd + std::fmt::Debug>(v: &mut [T], low: usize, high: us
         j = j-1;
     }
     v.swap(low, j);
-    j
+    return j
   }
 
 
