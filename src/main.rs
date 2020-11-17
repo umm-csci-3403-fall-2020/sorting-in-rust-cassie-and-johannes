@@ -1,6 +1,6 @@
 use rand::{thread_rng, Rng};
 use std::time::{Instant};
-use std::convert::TryInto;
+
 
 fn main() {
     let size = 200; // 100000;
