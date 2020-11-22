@@ -1,7 +1,6 @@
 use rand::{thread_rng, Rng};
 use std::time::{Instant};
 
-
 fn main() {
     let size = 200; // 100000;
     let v = generate_random_array(size, 0, size);
@@ -161,7 +160,27 @@ fn merge<T: PartialOrd + std::marker::Copy + std::fmt::Debug>(xs: Vec<T>, ys: Ve
 
     // This is totally wrong and will not sort. You should replace it
     // with something useful. :)
-    return xs;
+    let mut merged: Vec<T> = Vec::new(); // Vector to store merged vectors
+    let xs_length: usize = xs.len();
+    let ys_length: usize = ys.len();
+
+    // Variables to store independent vector indices
+    let mut xs_index: usize = 0;
+    let mut ys_index: usize = 0;
+
+    // Merge in order numbers at all vector indices used in both vectors
+    while xs_index < xs_length && ys_index < ys_length {
+        if xs[xs_index] <= ys[ys_index] {
+            merged.push(xs[xs_index]); 
+            xs_index = xs_index + 1;
+        }
+        else {
+            merged.push(ys[ys_index]); 
+            ys_index = ys_index + 1;
+        }
+    }
+
+    return merged;
 }
 
 fn is_sorted<T: PartialOrd>(slice: &[T]) -> bool {
