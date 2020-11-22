@@ -180,6 +180,17 @@ fn merge<T: PartialOrd + std::marker::Copy + std::fmt::Debug>(xs: Vec<T>, ys: Ve
         }
     }
 
+    // Merge remaining numbers (in case the vectors are of unequal size)
+    while xs_index < xs_length { // Remain in the bounds of the vector size
+        merged.push(xs[xs_index]); 
+        xs_index = xs_index + 1;
+    }
+    while ys_index < ys_length { // Remain in the bounds of the vector size
+        merged.push(ys[ys_index]); 
+        ys_index = ys_index + 1;
+    }
+    
+
     return merged;
 }
 
